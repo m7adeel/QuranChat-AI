@@ -43,7 +43,7 @@ export default function Home() {
     </View>
 
     {/* Button */}
-    <TouchableOpacity className="bg-yellow-400 px-6 py-3 rounded-full mt-6" onPress={() => {router.push('/(onboarding)')}}>
+    <TouchableOpacity className="bg-yellow-400 px-6 py-3 rounded-full mt-6" onPress={() => {router.push('/onboarding')}}>
       <Text className="text-black font-semibold text-lg">Bismillah</Text>
     </TouchableOpacity>
 
