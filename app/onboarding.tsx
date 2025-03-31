@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StatusBar, Image, TouchableOpacity, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { data } from '../content/onboarding';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 
 const Onboarding = () => {
     const [currentStep, setCurrentStep] = React.useState(0);
@@ -73,7 +74,7 @@ const Onboarding = () => {
                                 if (currentStep < data.length - 1) {
                                     setCurrentStep(currentStep + 1);
                                 } else {
-                                    // Navigate to the next screen or perform any action
+                                    router.replace('/(auth)/sign-in')
                                 }
                             }}
                         >
