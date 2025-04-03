@@ -24,8 +24,8 @@ const settingsMenu = [
   {
     category: "Account & Subscription",
     options: [
-      { label: "Profile Information", icon: "person-outline", navigateTo: "ProfileScreen" },
-      { label: "Change Password", icon: "lock-closed-outline", navigateTo: "ChangePasswordScreen" },
+      { label: "Profile Information", icon: "person-outline", action: events.NAVIGATE, navigateTo: "/(settings)/(account)/profile_information" },
+      { label: "Change Password", icon: "lock-closed-outline", action: events.NAVIGATE, navigateTo: "/(settings)/(account)/change_password" },
       { label: "Subscription Management", icon: "card-outline", navigateTo: "SubscriptionScreen" },
     ],
   },

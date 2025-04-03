@@ -4,7 +4,7 @@ import { Redirect, Stack } from 'expo-router';
 
 export default function Layout() {
 
-  Redirect({href:'/chat'})
+  Redirect({href:'/(settings)'})
 
   return <Stack screenOptions={{
     headerShown: false

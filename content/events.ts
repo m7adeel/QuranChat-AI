@@ -1,5 +1,6 @@
 const events = {
-    NAVIGATE: 'navigation'
+    NAVIGATE: 'navigation',
+    OPEN_MODAL: 'openModal'
 }
 
 export default events;

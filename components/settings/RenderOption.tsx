@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableOpacity, Text, Switch, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import events from "~/content/events";
 
 interface OptionProps {
     option: any;
@@ -14,7 +15,15 @@ const RenderOption = ({ option, categoryIndex, optionIndex, handleToggle }: Opti
     return (
         <TouchableOpacity
             style={styles.optionContainer}
-            onPress={() => option.navigateTo && router.replace(option.navigateTo as never)}
+            onPress={() => {
+                if(option.action == events.NAVIGATE) {
+                    router.push(option.navigateTo as never)
+                } else if (option.action == events.OPEN_MODAL) {
+                    // open modal code
+                } else {
+                    // NO EVENTS
+                }
+            }}
             activeOpacity={option.navigateTo ? 0.6 : 1}
         >
             <Ionicons name={option.icon} size={24} color="white" style={styles.icon} />
