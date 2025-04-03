@@ -1,8 +1,9 @@
 import React from "react";
-import { TouchableOpacity, Text, Switch, StyleSheet } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import events from "~/content/events";
+import ToggleButton from "../general/ToggleButton";
 
 interface OptionProps {
     option: any;
@@ -30,11 +31,9 @@ const RenderOption = ({ option, categoryIndex, optionIndex, handleToggle }: Opti
             <Text style={styles.optionText}>{option.label}</Text>
 
             {option.isToggleInput ? (
-                <Switch
+                <ToggleButton
                     value={option.value}
                     onValueChange={() => handleToggle(categoryIndex, optionIndex)}
-                    trackColor={{ false: "#767577", true: "#FFD700" }}
-                    thumbColor={option.value ? "#fff" : "#f4f3f4"}
                 />
             ) : option.type === "selection" ? (
                 <Text style={styles.selectionText}>{option.value}</Text>

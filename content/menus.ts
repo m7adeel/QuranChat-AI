@@ -32,7 +32,7 @@ const settingsMenu = [
   {
     category: "Chat Preferences",
     options: [
-      { label: "Voice-to-Text Settings", icon: "mic-outline", navigateTo: "VoiceToTextScreen" },
+      { label: "Voice-to-Text Settings", icon: "mic-outline", action: events.NAVIGATE, navigateTo: "/(settings)/(chat_prefs)/voice_to_text" },
       {
         label: "AI Response Length",
         icon: "options-outline",

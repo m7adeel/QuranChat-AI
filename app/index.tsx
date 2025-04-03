@@ -1,5 +1,5 @@
 import { Stack, Link, router } from 'expo-router';
-import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, Text, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Logo from '../assets/images/logo.png';
@@ -13,6 +13,7 @@ export default function Home() {
     end={{ x: 1, y: 1 }} // Bottom-right corner
     style={styles.container}
   >
+    <StatusBar barStyle="light-content" backgroundColor="#0E3B43" />
     <View className="flex-1 bg-gradient-to-b from-green-900 to-green-700 items-center justify-center px-6">
       
     {/* Logo */}
