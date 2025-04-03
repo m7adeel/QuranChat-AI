@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, FlatList, Switch, TouchableOpacity, TextInput, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { settingsMenu } from "../content/menus";
+import { settingsMenu } from "../../content/menus";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 

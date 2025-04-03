@@ -6,7 +6,7 @@ const chatMenu = [
         icon: 'settings-outline',
         lib: 'Ionicons',
         action: events.NAVIGATE,
-        to: '/settings'
+        to: '/(settings)'
     },
     {
         value: 'Saved',
