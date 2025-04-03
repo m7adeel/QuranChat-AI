@@ -1,7 +1,10 @@
 // App.js
 import React, { useState, useEffect, useRef } from 'react';
-import { StatusBar, SafeAreaView, View, Text, Image, TouchableOpacity, ScrollView, TextInput, ActivityIndicator } from 'react-native';
+import { StatusBar, SafeAreaView, View, Text, Image, TouchableOpacity, ScrollView, TextInput, ActivityIndicator, Modal } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { chatMenu } from '../content/menus';
+import events from '~/content/events';
+import { router } from 'expo-router';
 
 const apiService = {
   getIntroMessage: () => {
@@ -62,6 +65,7 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   const scrollViewRef = useRef(null); // Add a ref for the ScrollView
 
   useEffect(() => {
@@ -180,10 +184,41 @@ const Chat = () => {
           <Image source={require('../assets/images/logo.png')} className="w-6 h-6 mr-2" />
           <Text className="text-2xl font-bold text-white">QuranChat</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setShowMenu(true)}>
           <MaterialIcons name="more-vert" size={24} color="white" />
         </TouchableOpacity>
       </View>
+      
+      <Modal
+        visible={showMenu}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowMenu(false)}
+      >
+        <TouchableOpacity 
+          className="flex-1 bg-black/50" 
+          activeOpacity={1} 
+          onPress={() => setShowMenu(false)}
+        >
+          <View className="absolute top-16 right-4 bg-gray-800 rounded-xl overflow-hidden">
+            {chatMenu.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                className="flex-row items-center px-4 py-3 border-b border-gray-700"
+                onPress={() => {
+                  if(item.action === events.NAVIGATE) {
+                    setShowMenu(false)
+                    router.push(item.to)
+                  }
+                }}
+              >
+                <MaterialIcons name={item.icon} size={24} color="white" />
+                <Text className="text-white ml-3">{item.value}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </TouchableOpacity>
+      </Modal>
       
       <ScrollView 
         className="flex-1 p-4" 
