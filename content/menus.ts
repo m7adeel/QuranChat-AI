@@ -106,10 +106,10 @@ const settingsMenu = [
         value: true,
         onChange: (value) => console.log("Two-Factor Authentication:", value),
       },
-      { label: "Set App Lock", icon: "lock-closed-outline", navigateTo: "SetAppLockScreen" },
+      { label: "Set App Lock", icon: "lock-closed-outline", action: events.NAVIGATE, navigateTo: "/(settings)/(privaci&security)/app_lock" },
       { label: "Clear Chat History", icon: "trash-outline", navigateTo: "ClearChatHistoryScreen" },
       { label: "Download My Data Option", icon: "download-outline", navigateTo: "DownloadDataScreen" },
-      { label: "Manage Connected Devices", icon: "laptop-outline", navigateTo: "ManageDevicesScreen" },
+      { label: "Manage Connected Devices", icon: "laptop-outline", action: events.NAVIGATE, navigateTo: "/(settings)/(privaci&security)/active_devices" },
     ],
   },
   {
@@ -117,7 +117,7 @@ const settingsMenu = [
     options: [
       { label: "FAQs & Quick Tips", icon: "chatbubbles-outline", action: events.NAVIGATE, navigateTo: "/(settings)/(help)/faq_and_tips" },
       { label: "Contact Support", icon: "call-outline", navigateTo: "ContactSupportScreen" },
-      { label: "Report a Problem", icon: "alert-circle-outline", navigateTo: "ReportProblemScreen" },
+      { label: "Report a Problem", icon: "alert-circle-outline", action: events.NAVIGATE, navigateTo: "/(settings)/(help)/report_issue" },
       { label: "Community & Feedback", icon: "people-outline", navigateTo: "CommunityFeedbackScreen" },
     ],
   },

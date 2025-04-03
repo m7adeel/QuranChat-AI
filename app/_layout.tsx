@@ -4,7 +4,7 @@ import { Redirect, Stack } from 'expo-router';
 
 export default function Layout() {
 
-  Redirect({href:'/(settings)/(help)/report_issue'})
+  // Redirect({href:'/(settings)/(privaci&security)/app_lock'})
 
   return <Stack screenOptions={{
     headerShown: false
