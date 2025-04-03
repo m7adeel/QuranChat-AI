@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { settingsMenu } from "../../content/menus";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import RenderSection from "../../components/settings/RenderSection";
 
 const SettingsScreen = () => {
     const [settings, setSettings] = useState(settingsMenu);
@@ -23,32 +24,6 @@ const SettingsScreen = () => {
             option.label.toLowerCase().includes(searchQuery.toLowerCase())
         )
     })).filter(category => category.options.length > 0);
-
-    const renderOption = (option: any, categoryIndex: number, optionIndex: number) => {
-        return (
-            <TouchableOpacity
-                style={styles.optionContainer}
-                onPress={() => option.navigateTo && router.replace(option.navigateTo as never)}
-                activeOpacity={option.navigateTo ? 0.6 : 1}
-            >
-                <Ionicons name={option.icon} size={24} color="white" style={styles.icon} />
-                <Text style={styles.optionText}>{option.label}</Text>
-
-                {option.isToggleInput ? (
-                    <Switch
-                        value={option.value}
-                        onValueChange={() => handleToggle(categoryIndex, optionIndex)}
-                        trackColor={{ false: "#767577", true: "#FFD700" }}
-                        thumbColor={option.value ? "#fff" : "#f4f3f4"}
-                    />
-                ) : option.type === "selection" ? (
-                    <Text style={styles.selectionText}>{option.value}</Text>
-                ) : (
-                    <Ionicons name="chevron-forward" size={20} color="gray" />
-                )}
-            </TouchableOpacity>
-        );
-    };
 
     return (
         <View style={{ flex: 1 }}>
@@ -96,10 +71,11 @@ const SettingsScreen = () => {
                     data={filteredSettings}
                     keyExtractor={(item) => item.category}
                     renderItem={({ item, index: categoryIndex }) => (
-                        <View style={styles.categoryContainer}>
-                            <Text style={styles.categoryTitle}>{item.category}</Text>
-                            {item.options.map((option, optionIndex) => renderOption(option, categoryIndex, optionIndex))}
-                        </View>
+                        <RenderSection
+                            item={item}
+                            categoryIndex={categoryIndex}
+                            handleToggle={handleToggle}
+                        />
                     )}
                 />
             </LinearGradient>
@@ -139,18 +115,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         padding: 8,
     },
-    categoryContainer: { marginBottom: 20, paddingHorizontal: 16 },
-    categoryTitle: { color: "#888", fontSize: 16, marginBottom: 10 },
-    optionContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        paddingVertical: 12,
-        borderBottomWidth: 0.5,
-        borderBottomColor: "#444",
-    },
-    icon: { marginRight: 12 },
-    optionText: { color: "white", fontSize: 16, flex: 1 },
-    selectionText: { color: "#bbb", fontSize: 14, marginRight: 10 },
 });
 
 export default SettingsScreen;
