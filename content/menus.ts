@@ -115,7 +115,7 @@ const settingsMenu = [
   {
     category: "Help & Support",
     options: [
-      { label: "FAQs & Quick Tips", icon: "chatbubbles-outline", navigateTo: "FAQsScreen" },
+      { label: "FAQs & Quick Tips", icon: "chatbubbles-outline", action: events.NAVIGATE, navigateTo: "/(settings)/(help)/faq_and_tips" },
       { label: "Contact Support", icon: "call-outline", navigateTo: "ContactSupportScreen" },
       { label: "Report a Problem", icon: "alert-circle-outline", navigateTo: "ReportProblemScreen" },
       { label: "Community & Feedback", icon: "people-outline", navigateTo: "CommunityFeedbackScreen" },

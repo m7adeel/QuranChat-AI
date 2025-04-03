@@ -3,15 +3,15 @@ import React from 'react';
 
 type TextInputProps = {
   label: string;
-    value: string;
-    onChangeText: (text: string) => void;
-    placeholder?: string;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  placeholder?: string;
 };
 
 export default function TextInput({ label, value, onChangeText, placeholder }: TextInputProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <RNTextInput
         style={styles.input}
         value={value}
