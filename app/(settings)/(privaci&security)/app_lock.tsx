@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons';
 import ToggleButton from '~/components/general/ToggleButton';
 import SettingsHeader from '~/components/settings/SettingsHeader';
+import { router } from 'expo-router';
 
 export default function AppLock() {
     const [isAppLockEnabled, setIsAppLockEnabled] = useState(true);
@@ -32,7 +33,9 @@ export default function AppLock() {
                     <ToggleButton value={isAppLockEnabled} onValueChange={() => { setIsAppLockEnabled(!isAppLockEnabled) }} />
                 </View>
             </View>
-            <TouchableOpacity className={styles.optionContainer}>
+            <TouchableOpacity className={styles.optionContainer} onPress={() => {
+                router.push('/app_lock_pin')
+            }}>
                 <View className={styles.row}>
                     <View className={styles.iconBox}>
                         <Ionicons name='key' size={24} color="white" />
