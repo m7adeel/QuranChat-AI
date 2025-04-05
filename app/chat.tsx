@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { chatMenu } from '../content/menus';
 import events from '~/content/events';
 import { router } from 'expo-router';
+import Icon from '~/components/general/Icon';
 
 const apiService = {
   getIntroMessage: () => {
@@ -212,7 +213,7 @@ const Chat = () => {
                   }
                 }}
               >
-                <MaterialIcons name={item.icon} size={24} color="white" />
+                <Icon lib={item.lib} iconName={item.icon} size={20} color="white" />
                 <Text className="text-white ml-3">{item.value}</Text>
               </TouchableOpacity>
             ))}
