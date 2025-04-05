@@ -3,6 +3,7 @@ import { View, Text, StatusBar, Image, TouchableOpacity, SafeAreaView, ScrollVie
 import { data } from '../content/onboarding';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import { completeOnboarding } from '~/services';
 
 const Onboarding = () => {
     const [currentStep, setCurrentStep] = React.useState(0);
@@ -74,6 +75,7 @@ const Onboarding = () => {
                                 if (currentStep < data.length - 1) {
                                     setCurrentStep(currentStep + 1);
                                 } else {
+                                    completeOnboarding()
                                     router.replace('/(auth)/sign-in')
                                 }
                             }}
