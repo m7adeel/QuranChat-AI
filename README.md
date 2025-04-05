@@ -43,6 +43,7 @@ QuranChat AI is a cross-platform mobile application built with React Native that
 - iOS Simulator (for iOS development)
 - Android Studio (for Android development)
 - Git
+- Firebase account and project setup
 
 ## Installation
 
@@ -59,7 +60,17 @@ npm install
 yarn install
 ```
 
-3. Start the development server:
+3. Set up environment variables:
+   - Copy the `.env.example` file to create a new `.env` file:
+     ```bash
+     cp .env.example .env
+     ```
+   - Fill in your Firebase configuration values in the `.env` file:
+     - Get these values from your Firebase project settings
+     - Make sure to prefix all variables with `EXPO_PUBLIC_` as shown in the example
+     - Never commit your `.env` file to version control
+
+4. Start the development server:
 ```bash
 npm start
 # or
