@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import useAuthStore from '~/store/authStore';
 
 // Signup Screen Component
 const SignupScreen = () => {
@@ -8,6 +10,21 @@ const SignupScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const { signUp, isLoading, error, setError } = useAuthStore();
+
+    const handleSignUp = async () => {
+        if (!name || !email || !password) {
+            setError('Please fill in all fields');
+            return;
+        }
+
+        try {
+            await signUp(email, password);
+            router.replace('/(auth)/personalization');
+        } catch (error) {
+            // Error is already handled in the store
+        }
+    };
 
     return (
         <SafeAreaView className="flex-1 bg-teal-900">
@@ -17,7 +34,7 @@ const SignupScreen = () => {
                     className="mt-6"
                     onPress={() => router.back()}
                 >
-                    <Icons.ArrowLeft />
+                    <Ionicons name="arrow-back" size={24} color="white" />
                 </TouchableOpacity>
 
                 {/* Header */}
@@ -30,11 +47,18 @@ const SignupScreen = () => {
                     </Text>
                 </View>
 
+                {/* Error Message */}
+                {error && (
+                    <View className="bg-red-500 bg-opacity-20 p-3 rounded-lg mb-4">
+                        <Text className="text-red-200 text-center">{error}</Text>
+                    </View>
+                )}
+
                 {/* Signup Form */}
                 <View className="mb-6">
                     <Text className="text-white mb-2">Full Name</Text>
                     <TextInput
-                        className="bg-white bg-opacity-10 px-4 py-3 rounded-lg text-white mb-4"
+                        className="bg-white bg-opacity-10 px-4 py-3 rounded-lg mb-4"
                         placeholder="Enter your full name"
                         placeholderTextColor="rgba(255, 255, 255, 0.5)"
                         value={name}
@@ -43,7 +67,7 @@ const SignupScreen = () => {
 
                     <Text className="text-white mb-2">Email</Text>
                     <TextInput
-                        className="bg-white bg-opacity-10 px-4 py-3 rounded-lg text-white mb-4"
+                        className="bg-white bg-opacity-10 px-4 py-3 rounded-lg mb-4"
                         placeholder="Enter your email"
                         placeholderTextColor="rgba(255, 255, 255, 0.5)"
                         value={email}
@@ -55,7 +79,7 @@ const SignupScreen = () => {
                     <Text className="text-white mb-2">Password</Text>
                     <View className="flex-row bg-white bg-opacity-10 rounded-lg mb-6">
                         <TextInput
-                            className="flex-1 px-4 py-3 text-white"
+                            className="flex-1 px-4 py-3"
                             placeholder="Create a password"
                             placeholderTextColor="rgba(255, 255, 255, 0.5)"
                             value={password}
@@ -66,17 +90,23 @@ const SignupScreen = () => {
                             className="px-3 justify-center"
                             onPress={() => setShowPassword(!showPassword)}
                         >
-                            {showPassword ? <Icons.EyeOff /> : <Icons.Eye />}
+                            {showPassword ? <Ionicons name="eye-off" size={24} color="white" /> : <Ionicons name="eye" size={24} color="white" />}
                         </TouchableOpacity>
                     </View>
 
                     <TouchableOpacity
                         className="bg-yellow-400 py-4 rounded-full items-center mb-6"
                         activeOpacity={0.8}
+                        onPress={handleSignUp}
+                        disabled={isLoading}
                     >
-                        <Text className="text-black text-xl font-semibold">
-                            Sign Up
-                        </Text>
+                        {isLoading ? (
+                            <ActivityIndicator color="black" />
+                        ) : (
+                            <Text className="text-black text-xl font-semibold">
+                                Sign Up
+                            </Text>
+                        )}
                     </TouchableOpacity>
                 </View>
 
@@ -93,7 +123,7 @@ const SignupScreen = () => {
                         className="flex-row bg-white py-3 rounded-full items-center justify-center"
                         activeOpacity={0.8}
                     >
-                        <Icons.Google />
+                        <Ionicons name="logo-google" size={24} color="black" />
                         <Text className="text-black font-semibold">Continue with Google</Text>
                     </TouchableOpacity>
 
@@ -101,7 +131,7 @@ const SignupScreen = () => {
                         className="flex-row bg-black py-3 rounded-full items-center justify-center"
                         activeOpacity={0.8}
                     >
-                        <Icons.Apple />
+                        <Ionicons name="logo-apple" size={24} color="white" />
                         <Text className="text-white font-semibold">Continue with Apple</Text>
                     </TouchableOpacity>
                 </View>

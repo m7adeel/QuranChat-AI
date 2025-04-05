@@ -1,6 +1,8 @@
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import useAuthStore from '~/store/authStore';
 
 const Icons = {
   Google: () => (
@@ -19,14 +21,10 @@ const Icons = {
     </View>
   ),
   Eye: () => (
-    <View className="w-6 h-6">
-      <Text className="text-lg text-gray-500">👁️</Text>
-    </View>
+    <Ionicons name="eye" size={24} color="black" />
   ),
   EyeOff: () => (
-    <View className="w-6 h-6">
-      <Text className="text-lg text-gray-500">👁️‍🗨️</Text>
-    </View>
+    <Ionicons name="eye-off" size={24} color="black" />
   ),
 };
 
@@ -35,6 +33,17 @@ const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { signIn, isLoading, error, setError } = useAuthStore();
+
+  const handleSignIn = async () => {
+    try {
+      setError(null);
+      await signIn(email, password);
+      router.replace('/(auth)/personalization');
+    } catch (error) {
+      // Error is already handled in the auth store
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-teal-900">
@@ -57,11 +66,18 @@ const SignInScreen = () => {
           </Text>
         </View>
 
+        {/* Error Message */}
+        {error && (
+          <View className="bg-red-500 bg-opacity-20 p-3 rounded-lg mb-4">
+            <Text className="text-red-200">{error}</Text>
+          </View>
+        )}
+
         {/* Login Form */}
         <View className="mb-6">
           <Text className="text-white mb-2">Email</Text>
           <TextInput
-            className="bg-white bg-opacity-10 px-4 py-3 rounded-lg text-white mb-4"
+            className="bg-white bg-opacity-10 px-4 py-3 rounded-lg mb-4"
             placeholder="Enter your email"
             placeholderTextColor="rgba(255, 255, 255, 0.5)"
             value={email}
@@ -73,7 +89,7 @@ const SignInScreen = () => {
           <Text className="text-white mb-2">Password</Text>
           <View className="flex-row bg-white bg-opacity-10 rounded-lg mb-4">
             <TextInput
-              className="flex-1 px-4 py-3 text-white"
+              className="flex-1 px-4 py-3"
               placeholder="Enter your password"
               placeholderTextColor="rgba(255, 255, 255, 0.5)"
               value={password}
@@ -95,13 +111,16 @@ const SignInScreen = () => {
           <TouchableOpacity 
             className="bg-yellow-400 py-4 rounded-full items-center mb-6" 
             activeOpacity={0.8}
-            onPress={() => {
-                router.replace('/(auth)/personalization')
-            }}
+            onPress={handleSignIn}
+            disabled={isLoading}
           >
-            <Text className="text-black text-xl font-semibold">
-              Login
-            </Text>
+            {isLoading ? (
+              <ActivityIndicator color="black" />
+            ) : (
+              <Text className="text-black text-xl font-semibold">
+                Login
+              </Text>
+            )}
           </TouchableOpacity>
         </View>
 

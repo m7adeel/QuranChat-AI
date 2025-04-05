@@ -5,8 +5,11 @@ import { settingsMenu } from "../../content/menus";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import RenderSection from "../../components/settings/RenderSection";
+import useAuthStore from "~/store/authStore";
 
 const SettingsScreen = () => {
+    const { logout } = useAuthStore();
+
     const [settings, setSettings] = useState(settingsMenu);
     const [searchQuery, setSearchQuery] = useState("");
     const [isSearchActive, setIsSearchActive] = useState(false);
@@ -78,6 +81,15 @@ const SettingsScreen = () => {
                         />
                     )}
                 />
+                <TouchableOpacity 
+                    style={styles.logoutButton}
+                    onPress={() => {
+                        logout()
+                    }}
+                >
+                    <Ionicons name="log-out-outline" size={24} color="white" />
+                    <Text style={styles.logoutText}>Logout</Text>
+                </TouchableOpacity>
             </LinearGradient>
         </View>
     );
@@ -114,6 +126,23 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 16,
         padding: 8,
+    },
+    logoutButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 16,
+        margin: 16,
+        backgroundColor: 'rgba(255, 0, 0, 0.2)',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 0, 0, 0.3)',
+    },
+    logoutText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginLeft: 8,
     },
 });
 
