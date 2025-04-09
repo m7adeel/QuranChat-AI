@@ -1,6 +1,8 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useState } from "react";
+import useAuthStore from "~/store/authStore";
 
 const styles = {
     container: "flex-1 px-6 py-10 w-full",
@@ -16,6 +18,21 @@ const styles = {
 };
 
 const ChangePasswordScreen = () => {
+    const [currentPassword, setCurrentPassword] = useState('123456');
+    const [newPassword, setNewPassword] = useState('12345678');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('12345678');
+
+    const { changePassword } = useAuthStore();
+
+    const updatePassword = () => {
+        if(newPassword !== confirmNewPassword) {
+            console.log("Password incorrect")
+            return
+        } 
+
+        changePassword(currentPassword, newPassword)
+    }
+
     return (
         <LinearGradient
             colors={['#0A333A', '#236952']}
@@ -34,6 +51,7 @@ const ChangePasswordScreen = () => {
                             placeholder="Enter current password"
                             placeholderTextColor="#bbb"
                             className="flex-1 text-white"
+                            onChangeText={(text) => setCurrentPassword(text)}
                             secureTextEntry
                         />
                     </View>
@@ -48,6 +66,7 @@ const ChangePasswordScreen = () => {
                             placeholder="Enter new password"
                             placeholderTextColor="#bbb"
                             className="flex-1 text-white"
+                            onChangeText={(text) => setNewPassword(text)}
                             secureTextEntry
                         />
                     </View>
@@ -62,13 +81,14 @@ const ChangePasswordScreen = () => {
                             placeholder="Confirm new password"
                             placeholderTextColor="#bbb"
                             className="flex-1 text-white"
+                            onChangeText={(text) => setConfirmNewPassword(text)}
                             secureTextEntry
                         />
                     </View>
                 </View>
 
                 {/* Update Password Button */}
-                <TouchableOpacity className={styles.saveButton}>
+                <TouchableOpacity className={styles.saveButton} onPress={updatePassword}>
                     <Text className={styles.saveButtonText}>Update Password</Text>
                 </TouchableOpacity>
             </View>

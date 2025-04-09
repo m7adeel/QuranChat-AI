@@ -4,7 +4,10 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+    updatePassword,
+    EmailAuthProvider,
+    reauthenticateWithCredential
 } from 'firebase/auth'
 import { auth } from '~/firebase/firebaseConfig'
 
@@ -19,9 +22,11 @@ type AuthStoreType = {
     setError: (error: string | null) => void
     setLoading: (isLoading: boolean) => void
     resetError: () => void
+    changePassword: (currentPassword: string, newPassword: string) => Promise<void>
+    checkPassword: (password: string) => Promise<boolean>
 }
 
-const useAuthStore = create<AuthStoreType>((set) => ({
+const useAuthStore = create<AuthStoreType>((set, get) => ({
     user: null,
     isLoading: false,
     error: null,
@@ -74,7 +79,46 @@ const useAuthStore = create<AuthStoreType>((set) => ({
         }
     },
     setLoading: (isLoading: boolean) => set({ isLoading }),
-    resetError: () => set({ error: null })
+    resetError: () => set({ error: null }),
+
+    checkPassword: async (password: string) => {
+        const user = get().user
+        if (!user) {
+            console.error("No user is signed in")
+            return false
+          }
+        
+          const credential = EmailAuthProvider.credential(user.email, password)
+        
+          try {
+            await reauthenticateWithCredential(user, credential)
+            console.log("Old password is correct")
+            return true
+          } catch (error) {
+            console.error("Old password is incorrect:", error)
+            return false
+          }
+    },
+
+    changePassword: async (currentPassword: string , newPassword: string) => {
+        try {
+            const user = get().user
+
+            if(!user) {
+                throw new Error("User not logged in")
+            }
+
+            const isCurrentPassCorrect = await get().checkPassword(currentPassword)
+            if(isCurrentPassCorrect) {
+                const res = await updatePassword(user, newPassword)
+                console.log(res)
+            } else { 
+                throw new Error("Incorrect Password")
+            }
+        } catch (error: any) {
+            console.log(error.message)
+        }
+    }
 }))
 
 // Subscribe to auth state changes

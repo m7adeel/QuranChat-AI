@@ -1,20 +1,20 @@
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Image, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import useAuthStore from '~/store/authStore';
 
+import { Iconify } from 'react-native-iconify';
+
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+
+import { signInWithCredential, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '~/firebase/firebaseConfig';
+
+WebBrowser.maybeCompleteAuthSession();
+
 const Icons = {
-  Google: () => (
-    <View className="w-6 h-6 mr-2">
-      <Text className="text-2xl">G</Text>
-    </View>
-  ),
-  Apple: () => (
-    <View className="w-6 h-6 mr-2">
-      <Text className="text-2xl">🍎</Text>
-    </View>
-  ),
   ArrowLeft: () => (
     <View className="w-6 h-6">
       <Text className="text-2xl text-white">←</Text>
@@ -30,6 +30,23 @@ const Icons = {
 
 // Login Screen Component
 const SignInScreen = () => {
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId: process.env.EXPO_PUBLIC_GOOGLE_AUTH_IOS_KEY,
+    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_AUTH_ANDROID_KEY,
+  })
+
+  useEffect(()=> {
+    if(response?.type === "success") {
+      const { id_token } = response.params;
+      const credentials = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credentials);
+    }
+  }, [response])
+
+  const signInWithGoogle = () => {
+    promptAsync()
+  }
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -48,14 +65,6 @@ const SignInScreen = () => {
   return (
     <SafeAreaView className="flex-1 bg-teal-900">
       <ScrollView contentContainerClassName="flex-1 px-6">
-        {/* Back Button */}
-        <TouchableOpacity 
-          className="mt-6" 
-          onPress={() => router.back()}
-        >
-          <Icons.ArrowLeft />
-        </TouchableOpacity>
-
         {/* Header */}
         <View className="mt-8 mb-10">
           <Text className="text-white text-3xl font-bold mb-2">
@@ -136,17 +145,18 @@ const SignInScreen = () => {
           <TouchableOpacity 
             className="flex-row bg-white py-3 rounded-full items-center justify-center"
             activeOpacity={0.8}
+            onPress={signInWithGoogle}
           >
-            <Icons.Google />
-            <Text className="text-black font-semibold">Continue with Google</Text>
+            <Iconify icon='devicon:google' size={20}/>
+            <Text className="text-black font-semibold ml-5">Continue with Google</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
             className="flex-row bg-black py-3 rounded-full items-center justify-center"
             activeOpacity={0.8}
           >
-            <Icons.Apple />
-            <Text className="text-white font-semibold">Continue with Apple</Text>
+            <Iconify icon='ri:apple-fill' size={20} color={"white"}/>
+            <Text className="text-white font-semibold ml-5">Continue with Apple</Text>
           </TouchableOpacity>
         </View>
 
