@@ -37,7 +37,7 @@ const PinCreationScreen = () => {
           {[0, 1, 2, 3].map((dotIndex) => (
             <View 
               key={dotIndex}
-              className={`w-3 h-3 rounded-full ${
+              className={`w-3 h-3 mx-2 rounded-full ${
                 dotIndex < pin.length ? 'bg-white' : 'bg-slate-600 border border-slate-500'
               }`}
             />

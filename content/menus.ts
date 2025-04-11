@@ -1,4 +1,5 @@
 import events from "./events";
+import useSettingsStore from "~/store/settingsStore";
 
 const chatMenu = [
     {
@@ -44,8 +45,8 @@ const settingsMenu = [
         label: "Suggested Prompts",
         icon: "bulb-outline",
         isToggleInput: true,
-        value: true,
-        onChange: (value) => console.log("Suggested Prompts:", value),
+        value: useSettingsStore.getState().showSuggestedPrompts,
+        onChange: useSettingsStore.getState().toggleSuggestedPrompts(),
       },
       {
         label: "Save Chat History",

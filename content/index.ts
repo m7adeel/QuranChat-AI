@@ -6,6 +6,13 @@ const issueTypes = Object.freeze([
     "Others"
 ] as const)
 
+const responseLengths = Object.freeze([
+    "Short",
+    "Medium",
+    "Long"
+] as const)
+
 export {
-    issueTypes
+    issueTypes,
+    responseLengths
 }

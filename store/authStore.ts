@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 import {
     type User,
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
     updatePassword,
@@ -30,7 +30,7 @@ const useAuthStore = create<AuthStoreType>((set, get) => ({
     user: null,
     isLoading: false,
     error: null,
-    
+
     signUp: async (email: string, password: string) => {
         try {
             set({ isLoading: true, error: null })
@@ -86,33 +86,38 @@ const useAuthStore = create<AuthStoreType>((set, get) => ({
         if (!user) {
             console.error("No user is signed in")
             return false
-          }
-        
-          const credential = EmailAuthProvider.credential(user.email, password)
-        
-          try {
+        }
+
+        if (!user.email) {
+            console.error("No Email Found")
+            return false
+        }
+
+        const credential = EmailAuthProvider.credential(user.email, password)
+
+        try {
             await reauthenticateWithCredential(user, credential)
             console.log("Old password is correct")
             return true
-          } catch (error) {
+        } catch (error) {
             console.error("Old password is incorrect:", error)
             return false
-          }
+        }
     },
 
-    changePassword: async (currentPassword: string , newPassword: string) => {
+    changePassword: async (currentPassword: string, newPassword: string) => {
         try {
             const user = get().user
 
-            if(!user) {
+            if (!user) {
                 throw new Error("User not logged in")
             }
 
             const isCurrentPassCorrect = await get().checkPassword(currentPassword)
-            if(isCurrentPassCorrect) {
+            if (isCurrentPassCorrect) {
                 const res = await updatePassword(user, newPassword)
                 console.log(res)
-            } else { 
+            } else {
                 throw new Error("Incorrect Password")
             }
         } catch (error: any) {
